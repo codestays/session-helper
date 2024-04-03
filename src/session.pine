@@ -30,3 +30,27 @@ sydneySession       = input.bool(title = "Sydney", defval = false, group = "Sess
 sessionConnectColor = input.color(title = "", defval = color.new(color.red, 10), group = "Connect", inline = "Session connection")
 sessionConnectWidth = input.int(title = "", defval = 2, minval = 1, maxval = 5, group = "Connect", inline = "Session connection")
 sessionConnect      = input.bool(title = "Session connect", defval = false, group = "Connect", inline = "Session connection")
+
+
+drawSession(enableSession, sessionTime, sessionColor) =>
+    max_bars_back(sessionTime, 3000)
+    max_bars_back(high, 3000)
+    max_bars_back(low, 3000)
+    float highestPoint = high[1]
+    float lowestPoint = low[1]
+    int itrStop = 2999
+    int counter = 0
+    box sessionBox = na
+    box.delete(sessionBox[1])
+
+     if enableSession
+        if na(sessionTime) and not na(sessionTime[1])
+            for i = 2 to itrStop
+                if na(sessionTime[i])
+                    break
+                counter := i
+                highestPoint := math.max(highestPoint, high[i])
+                lowestPoint := math.min(lowestPoint, low[i])
+            
+            //+++ draw a box
+            box.new(bar_index - counter, highestPoint, bar_index - 1, lowestPoint, border_color=sessionColor, border_width=1, bgcolor=sessionColor)
