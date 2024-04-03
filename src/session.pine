@@ -1,0 +1,32 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Tenstays
+
+//@version=5
+indicator("session-helper", overlay=true, max_boxes_count=500, max_lines_count=500)
+//+++ Input session time
+timeZones           = input.string(title = "Time-zone", defval = "UTC+2", options = ["UTC+2"], group = "Sessions")
+asianSessionTime    = input.session(defval = "0300-0900", title = "", group = "Sessions", inline = "Asia")
+londonSessionTime   = input.session(defval = "0900-1500", title = "", group = "Sessions", inline = "London")
+nySessionTime       = input.session(defval = "1500-2100", title = "", group = "Sessions", inline = "NY")
+sydneySessionTime   = input.session(defval = "2100-0300", title = "", group = "Sessions", inline = "Sydney")
+asianTime           = time_close(timeframe.period, asianSessionTime, timeZones)
+londonTime          = time_close(timeframe.period, londonSessionTime, timeZones)
+nyTime              = time_close(timeframe.period, nySessionTime, timeZones)
+sydneyTime          = time_close(timeframe.period, sydneySessionTime, timeZones)
+
+//+++ Input colours
+asianBoxColor       = input(title = "", defval = color.new(color.blue, 80), group = "Sessions", inline = "Asia")
+londBoxColor        = input(title = "", defval = color.new(color.lime, 80), group = "Sessions", inline = "London")
+nyBoxColor          = input(title = "", defval = color.new(color.red, 80), group = "Sessions", inline = "NY")
+sydneyBoxColor      = input(title = "", defval = color.new(color.yellow, 80), group = "Sessions", inline = "Sydney")
+
+//+++ Show session input
+asianSession        = input.bool(title = "Asia", defval = false, group = "Sessions", inline = "Asia")
+londonSession       = input.bool(title = "London", defval = false, group = "Sessions", inline = "London")
+nySession           = input.bool(title = "New York", defval = false, group = "Sessions", inline = "NY")
+sydneySession       = input.bool(title = "Sydney", defval = false, group = "Sessions", inline = "Sydney")
+
+//+++ Session/Daily connection data input
+sessionConnectColor = input.color(title = "", defval = color.new(color.red, 10), group = "Connect", inline = "Session connection")
+sessionConnectWidth = input.int(title = "", defval = 2, minval = 1, maxval = 5, group = "Connect", inline = "Session connection")
+sessionConnect      = input.bool(title = "Session connect", defval = false, group = "Connect", inline = "Session connection")
