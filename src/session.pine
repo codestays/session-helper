@@ -54,3 +54,22 @@ drawSession(enableSession, sessionTime, sessionColor) =>
             
             //+++ draw a box
             box.new(bar_index - counter, highestPoint, bar_index - 1, lowestPoint, border_color=sessionColor, border_width=1, bgcolor=sessionColor)
+
+    //+++ draw a box in real-time
+    else if barstate.islast
+        if not na(sessionTime) and not na(sessionTime[1])
+            counter := 0
+            highestPoint := high[1]
+            lowestPoint := low[1]
+
+            for i = 2 to itrStop
+                if na(sessionTime[i])
+                    break
+                counter := i
+                highestPoint := math.max(highestPoint, high[i])
+                lowestPoint := math.min(lowestPoint, low[i])
+            
+            //+++ draw a box
+            sessionBox := box.new(bar_index - counter, highestPoint, bar_index - 1, lowestPoint, border_color=sessionColor, border_width=1, bgcolor=sessionColor)
+        
+
